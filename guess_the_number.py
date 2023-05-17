@@ -1,57 +1,51 @@
-import random
+import random 
 import PySimpleGUI as sg
 
-class GessNumberSimulator():
+class ChuteONumero:
     def __init__(self):
-        self.randon_value = 0
-        self.min_value = 1
-        self.max_value = 60
-        self.number_chances = 10
-
-    def Start(self):
+        self.valor_aleatorio = 0
+        self.valor_minimo = 1
+        self.valor_maximo = 100
+        self.tentar_novamente = True
+    
+    def Iniciar(self):
         # Layout
-        '''layout = [
-            [sg.Text('Your guess',size=(20,0))],
-            [sg.Input(size=(18,0),key='GuessValue')],
-            [sg.Button('Guess!')],
-            [sg.Output(size=(20,10))]
-        ]'''
-        # create a window
-        self.window = sg.Window('Guess Number Simulator')
-        
-
-        self.GenerateNumber()
-        self.RequestNumber()
+        layout = [
+            [sg.Text('Seu Chute',size=(39,0))],
+            [sg.Input(size=(18,0),key='ValorChute')],
+            [sg.Button('Chutar!')],
+            [sg.Output(size=(39,10))]
+        ]
+        # criar uma janela
+        self.janela = sg.Window('Chute o numero!',layout=layout)
+        self.GerarNumeroAleatorio()
         try:
             while True:
-                # receive the values
-                self.event, self.values = self.window.Read()
-            if self.event == 'Guess!':
-                self.guess_value = self.values['GuessValue']
-                while self.number_chances != 0:
-                    if int(self.guess_value) > self.randon_value:
-                        print(f'\033[1;32mA little less! (Number of chances: {self.number_chances})\033[m')
-                        self.number_chances -= 1
-                        self.RequestNumber()
-                    elif int(self.guess_value) < self.randon_value:
-                        print(f'\033[1;31mA little more! (Number of chances: {self.number_chances})\033[m')
-                        self.number_chances -= 1
-                        self.RequestNumber()
-                    if int(self.guess_value) == self.randon_value:
-                        self.try_again = False
-                        print(f'\033[1;34m🎉🎉🎉 CONGRATULATIONS! The number chosen is {self.randon_value}! You ´ re right! 🎉🎉🎉\033[m')
-                        break
-                    if self.number_chances == 0:
-                        print(f'\033[1;35m😢😢😢 What a shame! Your chances is over! This number chosen was {self.randon_value}! More luck in the next time!\033[m')
+                # receber os valores
+                self.evento, self.valores = self.janela.Read()
+                # Fazer alguma coisa com estes valores
+                if self.evento == 'Chutar!':
+                    self.valor_do_chute = self.valores['ValorChute']
+                    while self.tentar_novamente == True:
+                        if int(self.valor_do_chute) > self.valor_aleatorio:
+                            print('Chute um valor mais baixo!')
+                            break
+                        elif int(self.valor_do_chute) < self.valor_aleatorio:
+                            print('Chute um valor mais alto!')
+                            break
+                        if int(self.valor_do_chute) == self.valor_aleatorio:
+                            self.tentar_novamente = False
+                            print('PARABÉNS VOCÊ ACERTOU!!')
+                            break
+                if self.evento == sg.WIN_CLOSED:
+                    break
         except:
-            print('\033[1;031mPlease insert only integers numbers!\033[m')
+            print('Favor digitar apenas números!')
+            self.Iniciar()
+            
 
-    def RequestNumber(self):
-        self.guess_value = int(input('Guess any number: '))
-    
-    def GenerateNumber(self):
-        self.randon_value = random.randint(self.min_value, self.max_value)
-        
+    def GerarNumeroAleatorio(self):
+        self.valor_aleatorio =  random.randint(self.valor_minimo,self.valor_maximo)
 
-Guess1 = GessNumberSimulator()
-Guess1.Start()
+chute = ChuteONumero()
+chute.Iniciar()
