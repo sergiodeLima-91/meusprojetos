@@ -1,51 +1,48 @@
 import random 
 import PySimpleGUI as sg
 
-class ChuteONumero:
+class GuessTheNumber:
     def __init__(self):
-        self.valor_aleatorio = 0
-        self.valor_minimo = 1
-        self.valor_maximo = 100
-        self.tentar_novamente = True
+        self.random_value = 0
+        self.mininum_value = 1
+        self.maximum_value = 100
+        self.try_again = True
     
-    def Iniciar(self):
-        # Layout
+    def Start(self):
         layout = [
-            [sg.Text('Seu Chute',size=(39,0))],
-            [sg.Input(size=(18,0),key='ValorChute')],
-            [sg.Button('Chutar!')],
+            [sg.Text('Your guess',size=(39,0))],
+            [sg.Input(size=(18,0),key='GuessValue')],
+            [sg.Button('Guess!')],
             [sg.Output(size=(39,10))]
         ]
-        # criar uma janela
-        self.janela = sg.Window('Chute o numero!',layout=layout)
-        self.GerarNumeroAleatorio()
+        
+        self.window = sg.Window('Guess the number!',layout=layout)
+        self.GenerateRandomNumber()
         try:
             while True:
-                # receber os valores
-                self.evento, self.valores = self.janela.Read()
-                # Fazer alguma coisa com estes valores
-                if self.evento == 'Chutar!':
-                    self.valor_do_chute = self.valores['ValorChute']
-                    while self.tentar_novamente == True:
-                        if int(self.valor_do_chute) > self.valor_aleatorio:
-                            print('Chute um valor mais baixo!')
+                self.event, self.values = self.window.Read()
+                if self.event == 'Guess!':
+                    self.guess_value = self.values['GuessValue']
+                    while self.try_again == True:
+                        if int(self.guess_value) > self.random_value:
+                            print('A little less!')
                             break
-                        elif int(self.valor_do_chute) < self.valor_aleatorio:
-                            print('Chute um valor mais alto!')
+                        elif int(self.guess_value) < self.random_value:
+                            print('A little more!')
                             break
-                        if int(self.valor_do_chute) == self.valor_aleatorio:
-                            self.tentar_novamente = False
-                            print('PARABÉNS VOCÊ ACERTOU!!')
+                        if int(self.guess_value) == self.random_value:
+                            self.try_again = False
+                            print('CONGRATULATIONS! You right!')
                             break
-                if self.evento == sg.WIN_CLOSED:
+                if self.event == sg.WIN_CLOSED:
                     break
         except:
-            print('Favor digitar apenas números!')
-            self.Iniciar()
+            print('Please, insert only numbers!')
+            self.Start()
             
 
-    def GerarNumeroAleatorio(self):
-        self.valor_aleatorio =  random.randint(self.valor_minimo,self.valor_maximo)
+    def GenerateRandomNumber(self):
+        self.random_value =  random.randint(self.mininum_value, self.maximum_value)
 
-chute = ChuteONumero()
-chute.Iniciar()
+guess = GuessTheNumber()
+guess.Start()
