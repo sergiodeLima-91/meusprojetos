@@ -14,7 +14,7 @@ class DecideForMe:
         layout = [
             [sg.Text('Your question:')],
             [sg.Input(size=(18,0), key='QuestionValue')],
-            [sg.Button('Ask!')],
+            [sg.Button('Ask!'), sg.Button('Cancel')],
             [sg.Output(size=(20,10))]
         ]
                                     
@@ -27,8 +27,8 @@ class DecideForMe:
                 if self.event == 'Ask!':
                     print(choice(self.answers))
         except:
-             print('Please, enter a valid question.')
-             self.Start()
+             TypeError('Please, enter a valid question.')
+             self.window.close()
              
     def ReceiveQuestion(self):
          input('What this your question? > ')
